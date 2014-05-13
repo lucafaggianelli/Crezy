@@ -1,0 +1,19 @@
+package com.tesladocet.crezyremote;
+
+import org.json.JSONObject;
+
+public class Presentation {
+	
+	public final String id = "";
+	public final String title = "";
+	public final int slidesCount = 0;
+	public final int[] slidesTimeout = null;
+	
+	public Presentation() {
+		
+	}
+	
+	public Presentation(JSONObject j) {
+		
+	}
+}

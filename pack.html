@@ -1,0 +1,70 @@
+<html>
+<head>
+<style>
+.pack {
+    position: relative;
+    width: 250px;
+    height: 300px;
+    margin: 100px auto;
+    -webkit-perspective: 2000px;
+    -moz-perspective: 2000px;
+    perspective: 2000px;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transition: all 1s;
+}
+.layer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 150px;
+    line-height: 300px;
+    text-align: center;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(180,180,180,0.2);
+    color: rgba(255,255,255,0.25);
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.25);
+    -webkit-transition: all 1s;
+    -webkit-transition-delay: 1s;
+    opacity: 0;
+}
+.layer:first-child {
+    opacity: 1;
+}
+.layer img {
+    width: 100%;
+}
+</style>
+</head>
+<body>
+
+<script>
+var pack,layer;
+var imgs = ['galaxy.png','android.png','linux.png','chip.gif'];
+
+pack = document.createElement('div');
+pack.className = 'pack';
+for (var i=0; i<4; i++) {
+    layer = document.createElement('div');
+    layer.className = 'layer';
+    layer.innerHTML = '<img src="'+imgs[i]+'">';
+    pack.appendChild(layer);
+}
+document.body.appendChild(pack);
+
+function explode(bool) {
+    var pack = document.getElementsByClassName('pack')[0];
+    for (var i=0; i<pack.childElementCount; i++) {
+        pack.children[i].style.webkitTransform = 'translateZ('+(bool?-i*75:0)+'px)';
+        pack.children[i].style.opacity = 1;
+    }
+    if (bool) pack.style.webkitTransform = 'perspective(2000px)rotateX(30deg)rotateY(30deg)';
+    else pack.style.webkitTransform = '';
+}
+</script>
+
+</body>
+</html>

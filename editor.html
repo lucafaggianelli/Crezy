@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <link rel="stylesheet" href="styles/crezy.css">
+    <link rel="stylesheet" href="styles/element.css">
+    <link rel="stylesheet" href="font-awesome-4.0.3/css/font-awesome.min.css">
+    <link href="froala/css/froala_editor.min.css" rel="stylesheet" type="text/css">
+
+    <script src="closure/closure/goog/base.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <script src="froala/js/froala_editor.min.js"></script>
+    <script src="scripts/modernizr.js"></script>
+    <script src="scripts/editor.js"></script>
+</head>
+
+<body>
+
+    <canvas id="grid"></canvas>
+    
+    <div id="toolsbar">
+        <ul>
+            <li id="new-slide"><i class="fa fa-plus"></i></li>
+            <li id="new-text"><i class="fa fa-font"></i></li>
+            <li id="new-image"><i class="fa fa-picture-o"></i></li>
+        </ul>
+    </div>
+    
+    <div id="canvas" draggable="true">    
+        <div id="toolbar-container">
+            <div id="toolbar">
+                <div class="handle-n" data-action="resize-n" draggable="true"></div>
+                <div class="handle-s" data-action="resize-s" draggable="true"></div>
+                <div class="handle-e" data-action="resize-e" draggable="true"></div>
+                <div class="handle-w" data-action="resize-w" draggable="true"></div>
+
+                <div class="handle-ne" data-action="resize-ne" draggable="true"></div>
+                <div class="handle-nw" data-action="resize-nw" draggable="true"></div>
+                <div class="handle-se" data-action="resize-se" draggable="true"></div>
+                <div class="handle-sw" data-action="resize-sw" draggable="true"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

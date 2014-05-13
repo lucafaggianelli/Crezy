@@ -1,0 +1,29 @@
+package com.tesladocet.crezyremote;
+
+import java.util.HashMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class Presentation {
+	
+	public String id = "";
+	public String title = "";
+	public int slidesCount = 0;
+	public HashMap<Integer, Integer> slidesTimeout = new HashMap<Integer, Integer>();
+	
+	public Presentation() {
+		
+	}
+	
+	public Presentation(JSONObject j) {
+		try {
+			id = j.getString("id");
+			title = j.getString("title");
+			slidesCount = j.getInt("slidesCount");
+			slidesTimeout = new 
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+}

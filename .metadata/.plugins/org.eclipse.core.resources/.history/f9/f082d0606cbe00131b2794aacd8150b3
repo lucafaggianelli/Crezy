@@ -1,0 +1,5 @@
+package com.tesladocet.crezyremote;
+
+public final class Presentation {
+	public final String id = "";
+}

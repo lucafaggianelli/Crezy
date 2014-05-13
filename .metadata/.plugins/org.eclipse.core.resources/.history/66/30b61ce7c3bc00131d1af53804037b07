@@ -1,0 +1,43 @@
+package com.tesladocet.crezyremote;
+
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.support.v4.app.Fragment;
+
+public class MotionManager extends Fragment implements SensorEventListener {
+	
+	private SensorManager mSensorManager;
+	private Sensor mOrientationSensor;
+	
+	public MotionManager() {
+		mSensorManager = (SensorManager) getActivity()
+				.getSystemService(Context.SENSOR_SERVICE);
+		
+		mOrientationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+	}
+
+	@Override
+	public void onResume() {
+	    super.onResume();
+	    mSensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL);
+	  }
+
+	@Override
+	public void onPause() {
+		super.onPause();
+	    mSensorManager.unregisterListener(this);
+	}
+	
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		
+	}
+}

@@ -1,0 +1,7 @@
+package com.tesladocet.crezyremote;
+
+public class Presentation {
+	public final String id = "";
+	public final String title = "";
+	public final int slidesCount = 0;
+}

@@ -1,0 +1,67 @@
+<html>
+<head>
+<script src="closure/closure/goog/base.js"></script>
+<style>
+#main {
+    perspective: 800px;
+	perspective-origin: 50% 100px;
+}
+.cube {
+    position: relative;
+    margin-top: 100px;
+    margin-left:-100px;
+    top: 50%;
+    left: 50%;
+	width: 200px;
+	height: 200px;
+	-webkit-transform: rotateX(20deg) rotateY(20deg) rotateZ(20deg);
+	-webkit-transform-style: preserve-3d;
+}
+.cube div {
+    position: absolute;
+	width: 200px;
+	height: 200px;
+}
+.back {
+	-webkit-transform: translateZ(-100px) rotateY(180deg);
+	background: rgba(255,0,0,.5);
+}
+.right {
+	-webkit-transform: rotateY(-270deg) translateX(100px);
+	-webkit-transform-origin: top right;
+    background: rgba(0,255,0,.5);
+}
+.left {
+	-webkit-transform: rotateY(270deg) translateX(-100px);
+	-webkit-transform-origin: center left;
+	background: rgba(0,0,255,.5);
+}
+.top {
+	-webkit-transform: rotateX(-90deg) translateY(-100px);
+	-webkit-transform-origin: top center;
+	background: rgba(255,255,0,.5);
+}
+.bottom {
+	-webkit-transform: rotateX(90deg) translateY(100px);
+	-webkit-transform-origin: bottom center;
+	background: rgba(0,255,255,.5);
+}
+.front {
+	-webkit-transform: translateZ(100px);
+	background: rgba(255,0,255,.5);
+}
+</style>
+</head>
+<body>
+<div id="main">
+<div id="cube" class="cube">
+	<div class="front"></div>
+	<div class="back"></div>
+	<div class="top"></div>
+	<div class="bottom"></div>
+	<div class="left"></div>
+	<div class="right"></div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<html>
+<head>
+    <script src="closure/closure/goog/base.js"></script>
+</head>
+<body style="position:relative;">
+    <div id="el" style="margin:100px;width:200px;height:200px;background:green;-webkit-transform: perspective(400px)translate3d(0,0,100px);-webkit-transform-style: preserve-3d;"></div>
+    <div style="position:absolute;border:1px solid gray;top:0;left:0;"></div>
+</body>
+<script>
+    goog.require('goog.math.Vec3');
+    div = document.getElementById('el');
+    perOrig = [100,100];
+    
+    var a = goog.math.Vec3(100,100,100),
+        c = goog.math.Vec3(0, 0, 400),
+        e = goog.math.Vec3(0, 0, 400);
+    
+    // a-c then 180° rotation
+    var d = c.subtract(a);
+    var b = goog.math.Vec2((e.z*d.x)/d.z - e.x, (e.z*d.y)/d.z - e.y);
+</script>
+</html>

@@ -1,0 +1,25 @@
+@import url('../../styles/impress.css');
+
+#dl-blackberry {
+    height: 400px;
+    width: auto;
+}
+
+#dl-tank {
+    height: 400px;
+    width: auto;
+}
+
+#dl-scanner {
+    height: 400px;
+    width: auto;
+}
+
+.globe {
+    width: 400px;
+    height: 400px;
+    background-image: url('../imgs/world.jpg');
+    background-size: auto 400px;
+    background-repeat: repeat-x;
+    border-radius: 200px;
+}
