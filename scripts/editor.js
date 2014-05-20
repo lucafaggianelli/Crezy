@@ -330,14 +330,3 @@ var pfx = (function () {
     };
 
 })();
-
-var ID_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-function makeId(len) {
-    if (!len) len = 5;
-    var text = "";
-    
-    for( var i=0; i < len; i++ ) {
-        text += ID_ALPHABET.charAt(Math.floor(Math.random() * ID_ALPHABET.length));
-    }
-    return text;
-}

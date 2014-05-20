@@ -1,0 +1,9 @@
+{% if pres_list %}
+    <ul>
+    {% for pres in pres_list %}
+        <li><a href="{% url 'detail' pres.id %}">{{ pres.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No pres are available.</p>
+{% endif %}

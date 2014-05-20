@@ -1,8 +1,11 @@
 goog.provide('Crezy');
 
+goog.require('Crezy.utils');
 goog.require('Crezy.Slide');
 goog.require('Crezy.Element');
 goog.require('Crezy.Presentation');
+
+window.available = {};
 
 window.onload = function() {
     Crezy.impress = impress();
@@ -10,7 +13,7 @@ window.onload = function() {
 };
 
 Crezy.init = function() {
-    this.canvas = document.getElementById('impress');
+    this.canvas = $('#impress');
     this.logo = document.getElementById('logo');
     this.progressBar = document.querySelector('#progress');
     this.bookmarksBar = document.querySelector('#bookmarks-container');
@@ -22,25 +25,33 @@ Crezy.init = function() {
 
 Crezy.loadPresentation = function(name) {
     
-    this.presentation = this.getPresentation(name);
-    document.title = this.presentation.title;
-    this.logo.innerHTML = this.presentation.logo;
-    
-    this.drawSlides(this.presentation.slides);
-    //this.drawElements(this.presentation.elements);
-    Crezy.impress.init();
+    Crezy.getPresentation(name, function() {
+        Crezy.presentation = this;
+        document.title = Crezy.presentation.title;
+
+        Crezy.drawSlides(Crezy.presentation.slides);
+        Crezy.impress.init();
+    });
 };
 
-Crezy.getPresentation = function(name) {
-    if (!name) return fakePresentation;
-    else return window[name + 'Presentation'];
+Crezy.getPresentation = function(name,callback) {
+    if (!name) throw 'Provide a presentation name';
+    
+    $.get('/presentations/'+name+'.json', function(data) {
+        if (callback instanceof Function) callback.call(data);
+    },
+    'json');
 };
 
 Crezy.drawSlides = function(slides) {
-    var sl, step;
+    var slide, step;
     for (var i=0; i<slides.length; i++) {
-        sl = slides[i];
+
+        slide = new Crezy.Slide(slides[i]);
+        this.canvas.append(slide.draw());
         
+        //this.drawElements(sl.elements, step);
+        /*
         step = document.createElement('div');
         step.id = sl.id || 'step'+i;
         step.className = 'step';
@@ -49,11 +60,12 @@ Crezy.drawSlides = function(slides) {
         step.dataset.y = sl.y || 0;
         step.dataset.z = sl.z || 0;
         step.dataset.scale = sl.scale || 1;
+        step.dataset.rotate = sl.rotate || 0;
+        step.setAttribute('data-rotate-x', sl['rotate-x'] || 0);
+        step.setAttribute('data-rotate-y', sl['rotate-y'] || 0);
+        step.setAttribute('data-rotate-z', sl['rotate-z'] || 0);
         if (sl.showAfter) {step.classList.add('show-after');}
-        
-        this.drawElements(sl.elements, step);
-        
-        this.canvas.appendChild(step);
+        */
     }
 };
 

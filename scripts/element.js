@@ -1,13 +1,17 @@
 goog.provide('Crezy.Element');
 
+goog.require('Crezy.Text');
+goog.require('Crezy.Image');
+
 Crezy.Element = function(args) {
-    var json = {};
-    $.extend(json, {id: makeId(), position: [0,0], size: ['auto','auto'], style: {}}, args);
+    var json = {id: Crezy.utils.makeId(), position: [0,0], size: ['auto','auto'], style: {}};
+    $.extend(json,args);
     
     this.id = json.id;
     this.type = json.type;
     this.position = [json.position[0], json.position[1]];
     this.size = [json.size[0], json.size[1]];
+    this.content = json.content || '';
 
     this.style = json.style;
     
@@ -84,106 +88,8 @@ Crezy.Element = function(args) {
     this.rotateX = function(angle) { return this.rotate('x', angle) };
     this.rotateY = function(angle) { return this.rotate('y', angle) };
     this.rotateZ = function(angle) { return this.rotate('z', angle) };
-
-    this.projectedHeight = function() {
-        var A = this.position[0];
-        var B = this.size[0];
-
-        // new coordinates
-        A = calc(A, 35*Math.PI/180, 300);
-        B = calc(B, 35*Math.PI/180, 300);
-        // translate back
-        A += (this.size[0])/2;
-        B += (this.size[0])/2;
-        if(B < A) { var tmp = A; A = B; B = tmp; } // swap
-
-        return B-A;
-    };
-
-    this._draw = function(html, parent) {
-        var css = {
-            width: this.size[0], height: this.size[1],
-            left: this.position[0], top: this.position[1]};
-        $.extend(css, this.style);
-        
-        this.ui = $('<div id="'+this.id+'" type="'+this.type+'">'+html+'</div>')
-            .addClass('element').attr('draggable', 'true')
-            .css(css)
-            .appendTo(parent);
-    };
-    
-    this._animate = function(animate, duration, steps) {
-        var _this = this, i = 0, delta;
-
-        if (isFinite(duration) && isFinite(steps)) {
-            delta = Math.round(duration/steps);
-        } else if (isFinite(duration)) {
-            delta = parseInt(duration);
-        } else {
-            throw 'Duration and steps must be integers!';
-            return false;
-        }
-        
-        var interval = setInterval(function() {
-                if (animate.call(_this, ++i) === false) clearInterval(interval);
-                if (i >= steps) clearInterval(interval);
-            }, delta);
-    };
 }
 
-Crezy.TextEditor = function(args) {
-    args = args || {};
-    this.type = 'Text';
-    
-    this.text = args.text || '';
-    this.style = args.style || {};
-    
-    this.draw = function(parent) {
-        this._draw('<input type="text" value="'+this.text+'"/>', parent);
-    };
-    
-    this.height = function(set) {
-        this._height(set).ui.css('font-size', set);
-    };
-
-    this.save = function() {
-        return this._save(['text']);
-    };
+Crezy.Element.newInstance = function(json) {
+    return new window.available[json.type](json);
 }
-Crezy.TextEditor.prototype = new Crezy.Element;
-
-Crezy.Text = function(args) {
-    args = args || {};
-    this.type = 'Text';
-    
-    this.text = args.text || '';
-    this.style = args.style || {};
-    
-    this.draw = function(parent) {
-        this._draw('<p>'+this.text+'</p>');
-    };
-    
-    this.height = function(set) {
-        this._height(set).ui.css('font-size', set);
-    };
-    
-    this.animate = function() {
-        this._animate(function(step) {
-            this.ui.html(this.text.slice(0, step));
-        }, 5000, this.text.length);
-    };
-
-    this.save = function() {
-        return this._save(['text']);
-    };
-}
-Crezy.Text.prototype = new Crezy.Element;
-
-function calc(oldx, angle, p) {
-    var x = Math.cos(angle) * oldx;
-    var z = Math.sin(angle) * oldx;
-
-    return x * p / (p+z);
-}
-
-var RE_CSS_ROTATE = new RegExp(/rotate([A-Z])\((-*[0-9]+)deg\)/);
