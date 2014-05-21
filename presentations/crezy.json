@@ -3,7 +3,11 @@
 "description": "CrezyJS presentation that clones ImpressJS demo one",
 "author": "Luca Faggianelli",
 "logo": "",
-
+"copyright":"open",
+"settings": {
+    "seekbar": {"presentation":true,"remote":true,"color":"#4682B4"},
+    "social": {"facebook":true,"twitter":true}
+},
 "slides": [
     {"id":"bored", "name": "Bored", "description": "", "x":-1000, "y":-1500,
     "elements": [

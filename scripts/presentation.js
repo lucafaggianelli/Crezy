@@ -10,7 +10,7 @@ Crezy.Presentation = function(args) {
     this.author = json.author;
     
     this.slides = {};
-    
+    this.settings = {};
     this.elements = {};
         
     this.save = function() {
