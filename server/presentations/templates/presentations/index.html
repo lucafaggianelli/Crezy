@@ -1,9 +1,19 @@
+{% extends "layout.html" %}
+
+{% block header %}
+    Title
+{% endblock %}
+
+{% block body %}
+
 {% if pres_list %}
-    <ul>
+    <ul id="presentations">
     {% for pres in pres_list %}
-        <li><a href="{% url 'detail' pres.id %}">{{ pres.title }}</a></li>
+        <li class="presentation-item"><a href="{% url 'detail' pres.id %}">{{ pres.title }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
     <p>No pres are available.</p>
 {% endif %}
+
+{% endblock %}

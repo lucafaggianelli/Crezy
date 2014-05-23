@@ -7,4 +7,5 @@ from django.conf.urls.static import static
 urlpatterns = [ #patterns('',
     url(r'^$', views.index, name="index"),
     url(r'^(?P<presentation_id>\d+)/$', views.detail, name='detail'),
+    url(r'^(?P<presentation_id>\d+)/play$', views.play, name='play'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

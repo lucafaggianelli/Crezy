@@ -1,11 +1,20 @@
 goog.provide('Crezy.Ui');
 
 Crezy.Ui = function() {
+    fallback = "\
+<p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>\
+<p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>'
+    hint = "<p>Use a spacebar or arrow keys to navigate</p>"
+
+    this.logo = null;
+
     // Impress elements
     this.canvas = $('#impress');
-    this.logo = $('<div id="logo"></div>');
+    $('<div class="fallback-message"></div>').html(fallback).appendTo(document.body);
+    $('<div class="hint"></div>').html(hint).appendTo(document.body);
     
     if (false) {
+        this.logo = $('<div id="logo"></div>');
         this.logo.appendTo(document.body);
     }
     

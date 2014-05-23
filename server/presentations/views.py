@@ -10,3 +10,7 @@ def index(request):
 def detail(request, presentation_id):
     pres = get_object_or_404(Presentation, pk=presentation_id)
     return render(request, 'presentations/details.html', {'pres': pres})
+
+def play(request, presentation_id):
+    pres = get_object_or_404(Presentation, pk=presentation_id)
+    return render(request, 'presentations/play.html', {'pres': pres})
