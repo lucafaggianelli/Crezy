@@ -1,8 +1,5 @@
 goog.provide('Crezy.Element');
 
-goog.require('Crezy.Text');
-goog.require('Crezy.Image');
-
 Crezy.Element = function(args) {
     var json = {id: Crezy.utils.makeId(), position: [0,0], size: ['auto','auto'], style: {}};
     $.extend(json,args);
@@ -14,8 +11,6 @@ Crezy.Element = function(args) {
     this.content = json.content || '';
 
     this.style = json.style;
-    
-    this.ui = null;
 
     this._toSave = ['id','type','position','size','style'];
     this._save = function(props) {
@@ -90,6 +85,16 @@ Crezy.Element = function(args) {
     this.rotateZ = function(angle) { return this.rotate('z', angle) };
 }
 
+Crezy.Element.prototype.draw = function() {}
+Crezy.Element.prototype.edit = function() {}
+
 Crezy.Element.newInstance = function(json) {
-    return new window.available[json.type](json);
+    if (Crezy.Element._available.hasOwnProperty(json.type) &&
+        Crezy.Element._available[json.type] instanceof Function)
+    return new Crezy.Element._available[json.type](json);
 }
+
+Crezy.Element._available = {};
+
+goog.require('Crezy.Text');
+goog.require('Crezy.Image');

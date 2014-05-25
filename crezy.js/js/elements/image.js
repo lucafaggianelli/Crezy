@@ -9,7 +9,8 @@ Crezy.Image = function(args) {
 goog.inherits(Crezy.Image, Crezy.Element);
 
 Crezy.Image.prototype.draw = function() {
-    return '<img src="'+this.src+'"/>';
+    this.ui = $('<img id="'+this.id+'" class="element" data-type="image" src="'+this.src+'"/>');
+    return this.ui;
 };
 
-available.text = Crezy.Image;
+Crezy.Element._available.image = Crezy.Image;

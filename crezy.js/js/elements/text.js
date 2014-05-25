@@ -8,8 +8,8 @@ Crezy.Text = function(args) {
 goog.inherits(Crezy.Text, Crezy.Element);
 
 Crezy.Text.prototype.draw = function() {
-    console.log(this);
-    return '<p>' + this.content + '</p>';
+    this.ui = $('<p id="'+this.id+'" class="element" data-type="text">' + this.content + '</p>');
+    return this.ui;
 };
 
-available.text = Crezy.Text;
+Crezy.Element._available.text = Crezy.Text;

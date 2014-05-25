@@ -1,21 +1,23 @@
 {% extends "layout.html" %}
 
 {% block head %}
-<link href="/static/css/impress.css" rel="stylesheet" />
+<link href="/static/css/editor.css" rel="stylesheet" />
 {% endblock %}
 
-{% block bodyclass %}impress-not-supported{% endblock %}
+{% block bodyclass %}{% endblock %}
 
 {% block body %}
+<div id="canvas" draggable="true"></div>
 
-<div id="impress"></div>
+<div id="overview"></div>
 
-<script src="/static/js/impress.js"></script>
+<script src="/static/js/nicEdit.js"></script>
+<script src="/static/js/impress-editor.js"></script>
 <script src="/static/js/jquery.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 
 <script src="/static/closure/goog/base.js"></script>
-<script src="/static/js/crezy.js"></script>
+<script src="/static/js/editor.js"></script>
 
 <script>
 Crezy.loadPresentation({{ pres.id }});

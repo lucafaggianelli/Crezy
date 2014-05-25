@@ -88,5 +88,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/home/luca/Development/Crezy/crezy/server/static'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, '../crezy.js')
+    os.path.join(BASE_DIR, '../crezy.js'),
+    os.path.join(BASE_DIR, '../closure')
 )

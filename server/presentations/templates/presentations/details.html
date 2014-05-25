@@ -1,3 +1,4 @@
 <h1>{{ pres.title }}</h1>
 <p><i>{{ pres.description }}</i></p>
 <p>by {{pres.user}}</p>
+<a href="{% url 'play' pres.id %}">Play</a> | <a href="{% url 'edit' pres.id %}">Edit</a>

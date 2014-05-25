@@ -6,8 +6,6 @@ goog.require('Crezy.Slide');
 goog.require('Crezy.Element');
 goog.require('Crezy.Presentation');
 
-window.available = {};
-
 window.onload = function() {
     Crezy.impress = impress();
     Crezy.init();
@@ -21,9 +19,9 @@ Crezy.init = function() {
     document.addEventListener('impress:stepleave', Crezy._onStepLeave);
 };
 
-Crezy.loadPresentation = function(name) {
+Crezy.loadPresentation = function(id) {
     
-    Crezy.getPresentation(name, function() {
+    Crezy.getPresentation(id, function() {
         Crezy.presentation = this;
         document.title = Crezy.presentation.title;
 
@@ -32,10 +30,10 @@ Crezy.loadPresentation = function(name) {
     });
 };
 
-Crezy.getPresentation = function(name,callback) {
-    if (!name) throw 'Provide a presentation name';
+Crezy.getPresentation = function(id,callback) {
+    if (!id) throw 'Provide a presentation id';
     
-    $.get('/presentations/'+name+'.json', function(data) {
+    $.get('/static/presentations/'+id+'.json', function(data) {
         if (callback instanceof Function) callback.call(data);
     },
     'json');
