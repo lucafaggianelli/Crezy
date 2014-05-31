@@ -53,7 +53,7 @@ Crezy.Slide.prototype.edit = function() {
     // Create inner elements
     var elem;
     for (var i in this.elements) {
-        this.ui.append(this.elements[i].draw());
+        this.ui.append(this.elements[i].edit());
     }
     return this.ui;
 }

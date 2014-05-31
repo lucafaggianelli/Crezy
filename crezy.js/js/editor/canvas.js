@@ -1,19 +1,24 @@
 goog.provide('Crezy.Editor.Canvas');
 
-goog.require('goog.events')
+goog.require('goog.events');
+goog.require('goog.math.Vec2');
 
 Crezy.Editor.Canvas = function() {
 
     this.scale = 1.0;
-    this.panning = [0,0,0];
+    this.panning = new goog.math.Vec2(0,0);
+    this._panStart = new goog.math.Vec2(0,0);
 }
 
 Crezy.Editor.Canvas.prototype.draw = function() {
+    document.body.setAttribute('draggable','true');
     this.ui = $('#canvas')
+        .attr('draggable', 'true')
         .on('dragstart', '.element', this._onDragStart)
         .on('click', '.element', function() {
             Crezy.currentSlide = Crezy.presentation.slides[$(this).parent('.step')[0].id];
             Crezy.currentElement = Crezy.currentSlide.elements[this.id];
+            console.log('Clicked an element', Crezy.currentSlide, Crezy.currentElement);
         })
         .bind('dragover', this._onDragOver)
         .bind('drop', this._onDrop);
@@ -21,8 +26,8 @@ Crezy.Editor.Canvas.prototype.draw = function() {
     // Zoom and pan
     goog.events.listen(document.body, 'mousewheel',
         this._onMouseScroll, false, this);
-    goog.events.listen(this.ui[0], 'dragstart', this._onPanCanvasStart, false, this);
-    //Crezy.canvas._ui.bind('drag', this._onPanCanvas);
+    goog.events.listen(document.body, 'dragstart', this._onPanCanvasStart, false, this);
+    goog.events.listen(document.body, 'drag', this._onPanCanvas, false, this);
 };
 
 Crezy.Editor.Canvas.prototype._onMouseScroll = function(g_evt) {
@@ -36,20 +41,30 @@ Crezy.Editor.Canvas.prototype._onMouseScroll = function(g_evt) {
 }
 
 Crezy.Editor.Canvas.prototype._onPanCanvasStart = function(event) {
-    var data = ['pan'];
-    data.push(event.originalEvent.clientX);
-    data.push(event.originalEvent.clientY);
-    console.log('dragstart', data)
-    event.originalEvent.dataTransfer.setData("text/html", data.join(','));
+    //var data = ['pan'];
+    //var dumb = document.createElement('img');
+    //dumb.style.display = 'none';
+    //dumb.src = '';
+    console.log(event);
+    this._panStart = new goog.math.Vec2(event.clientX, event.clientY);
+    //event.event_.dataTransfer.setDragImage(dumb,0,0);
+    //data.push(event.originalEvent.clientX);
+    //data.push(event.originalEvent.clientY);
+    //event.originalEvent.dataTransfer.setData("text/html", data.join(','));
 }
 
 Crezy.Editor.Canvas.prototype._onPanCanvas = function (event) {
-    var data = event.originalEvent.dataTransfer.getData("text/html").split(',');
-
+    //var data = event.originalEvent.dataTransfer.getData("text/html").split(',');
+    var delta = new goog.math.Vec2(event.clientX, event.clientY);
+    console.log(delta,this._panStart);
+    //delta.subtract(this._panStart).scale(this.scale);
+    this.ui.children().css('transform', 'translate3d('+delta.x+'px,'+delta.y+'px,0px)');
+    //this._panStart = delta;
+    //console.log(delta,event);
     //Crezy.canvas._pan[0] += event.originalEvent.clientX + parseInt(data[1],10)
     //Crezy.canvas._ui[0].style[pfx('transform')] = 'translate3d('++')';
 
-    event.originalEvent.preventDefault();
+    //event.originalEvent.preventDefault();
     return false;
 }
     
