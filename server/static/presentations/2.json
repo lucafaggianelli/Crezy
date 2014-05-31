@@ -1,0 +1,48 @@
+{
+"title": "CrezyJS",
+"description": "Official CrezyJS presentation",
+"author": "Luca Faggianelli",
+"logo": "",
+
+"slides": [
+    {"id":"bored", "name": "Bored", "description": "", "x":-1000, "y":-1500,
+    "elements": [
+        {"type":"text", "content":"Aren't you just <b>bored</b> with all those slides-based presentations?"}
+    ]},
+    {"id":"", "name": "", "description": "", "x":0, "y":-1500,
+    "elements": [
+        {"type":"text", "content":"Don't you think that presentations given <strong>in modern browsers</strong> shouldn't <strong>copy the limits</strong> of 'classic' slide decks?"}
+    ]},
+    {"id":"", "name": "", "description": "", "x":1000, "y":-1500,
+    "elements": [
+        {"type":"text", "content":"Would you like to <strong>impress your audience</strong> with <strong>stunning visualization</strong> of your talk?"}
+    ]},
+    {"id":"title", "name": "Title", "description": "", "x":0, "y":0, "scale":4,
+    "elements": [
+        {"type":"text", "content":"<span class=\"try\">then you should try</span><h1>impress.js<sup>*</sup></h1><span class=\"footnote\"><sup>*</sup> no rhyme intended</span>"}
+    ]},
+    {"id":"its", "name": "Its", "description": "", "x":850, "y":3000, "scale":5, "rotate":90,
+    "elements": [
+        {"type":"text", "content":"It's a <strong>presentation tool</strong> <br/>inspired by the idea behind <a href=\"http://prezi.com\">prezi.com</a> <br/>and based on the <strong>power of CSS3 transforms and transitions</strong> in modern browsers."}
+    ]},
+    {"id":"big", "name": "Big", "description": "", "x":3500, "y":2100, "scale":6, "rotate":180,
+    "elements": [
+        {"type":"text", "content":"visualize your <b>big</b> <span class=\"thoughts\">thoughts</span>"}
+    ]},
+    {"id":"tiny", "name": "Tiny", "description": "", "x":2825, "y":2325, "z":-3000, "rotate":300,
+    "elements": [
+        {"type":"text", "content":"and <b>tiny</b> ideas"}
+    ]},
+    {"id":"ing", "name": "Ing", "description": "", "x":3500, "y":-850, "rotate":270, "scale":6,
+    "elements": [
+        {"type":"text", "content":"by <b class=\"positioning\">positioning</b>, <b class=\"rotating\">rotating</b> and <b class=\"scaling\">scaling</b> them on an infinite canvas"}
+    ]},
+    {"id":"one-more", "name": "One more thing", "description": "", "x":6000, "y":4000, "scale":2,
+    "elements": [
+        {"type":"text", "content":"one more thing..."}
+    ]},
+    {"id":"its-in-3d", "name": "It's in 3D", "description": "", "x":6200, "y":4300, "z":-100, "rotate-x":-40, "rotate-y":10, "scale":2,
+    "elements": [
+        {"type":"text", "content":"<span class=\"have\">have</span><span class=\"you\">you</span><span class=\"noticed\">noticed</span> <span class=\"its\">it's</span> <span class=\"in\">in</span> <b>3D<sup>*</sup></b>?<span class=\"footnote\">* beat that, prezi ;)</span>"}
+    ]}
+]}
