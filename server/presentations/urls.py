@@ -9,4 +9,5 @@ urlpatterns = [ #patterns('',
     url(r'^(?P<presentation_id>\d+)/$', views.detail, name='detail'),
     url(r'^(?P<presentation_id>\d+)/play$', views.play, name='play'),
     url(r'^(?P<presentation_id>\d+)/edit$', views.edit, name='edit'),
+    url(r'^new$', views.new, name='new'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
