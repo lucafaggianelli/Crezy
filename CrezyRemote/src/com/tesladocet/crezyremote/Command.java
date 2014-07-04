@@ -3,6 +3,10 @@ package com.tesladocet.crezyremote;
 public class Command {
 
 	public final static String
+        // Connection
+        CONNECT = "connect",
+        DISCONNECT = "disconnect",
+
 		// Remote configuration
 		REMOTE_LAYOUT = "rem:layout",
 		REMOTE_CONFIG = "rem:config",
@@ -15,7 +19,7 @@ public class Command {
 		
 		// Presentation
 		PRESENTATION = "pres",
-		PRESENTATION_NOTES = "notes",
+		NOTES = "notes",
 		
 		// Steps
 		STEP_NEXT = "next",

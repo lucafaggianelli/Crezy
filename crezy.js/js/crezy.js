@@ -5,6 +5,7 @@ goog.require('Crezy.Ui');
 goog.require('Crezy.Slide');
 goog.require('Crezy.Element');
 goog.require('Crezy.Presentation');
+goog.require('Crezy.Remote')
 
 window.onload = function() {
     Crezy.impress = impress();
