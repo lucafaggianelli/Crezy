@@ -1,0 +1,48 @@
+<html>
+<head>
+<script type="text/javascript" src="paper-full.min.js"></script>
+<!-- Define inlined PaperScript associate it with myCanvas -->
+<script type="text/paperscript" canvas="crezy">
+	// Create a Paper.js Path to draw a line into it:
+    var path = new Path.Circle({
+        center: [100,100],
+        radius: 30,
+        strokeColor: 'red',
+        selected: false
+    });
+    var lastDelta = 0, initialCenter;
+    
+    function onMouseDown(event) {
+        lastDelta = 0;
+        initialCenter = view.center;
+    }
+
+    function onMouseDrag(event) {
+        //var delta = event.point - event.lastPoint;
+        //console.log(event.point);
+        //view.center -= delta;
+        var des = pan(event.downPoint ,event.point); 
+    	project.view.center = des; 
+    }
+    
+    function onMouseUp(event) {
+    }
+    
+    function pan(a,b){
+         var center = project.view.center;
+         var desX = (a.x - b.x);
+         var desY=  (a.y - b.y);
+                    
+         var newCenter = [center.x + desX , center.y + desY];
+         return newCenter;
+    }
+
+    function onResize(event) {
+        path.position = view.center;
+    }
+</script>
+</head>
+<body style="padding:0;margin:0;">
+    <canvas id="crezy" resize></canvas>
+</body>
+</html>

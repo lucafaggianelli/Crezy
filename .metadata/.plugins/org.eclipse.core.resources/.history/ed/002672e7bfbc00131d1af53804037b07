@@ -1,8 +1,0 @@
-package com.tesladocet.crezyremote;
-
-import android.hardware.SensorManager;
-
-public class MotionManager {
-	
-	private SensorManager mSensorManager;
-}

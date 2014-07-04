@@ -1,5 +1,0 @@
-INDEX VERSION 1.126+/home/luca/Development/crezy/.metadata/.plugins/org.eclipse.jdt.core
-3813960018.index
-2485032819.index
-304787393.index
-4101028316.index

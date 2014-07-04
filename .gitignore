@@ -4,3 +4,14 @@ ammap
 amcharts
 *.pyc
 /bootstrap-3.1.1-dist
+
+# Android
+*.class
+/CrezyRemote/gen
+*.ap_
+*.dex
+CrezyRemote/.gradle/
+CrezyRemote/build/
+.metadata
+local.properties
+*.log
