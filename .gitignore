@@ -7,8 +7,9 @@ amcharts
 
 # Android
 *.class
-/CrezyRemote/gen
-*.ap_
+gen/
+bin/
+/CrezyRemote/*.ap_
 *.dex
 CrezyRemote/.gradle/
 CrezyRemote/build/

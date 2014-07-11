@@ -3,26 +3,32 @@ goog.provide('Crezy.Remote');
 goog.require('goog.object');
 
 Crezy.Remote = function(address) {
-    address = address || null;
-    if (!address) throw "Need an IP address to connect to!";
-
-    if (typeof address == 'string') {
-        if (address.split('://').length == 1) address = 'ws://' + address;
-        address = new URL(address);
-    }
-    else if (!(address instanceof URL)) address = null;
-
-    this.address = address;
+    this.address = buildAddress(address || null);
     this.connected = false;
     this._socket = null;
-
     this.pres = null;
 };
 
-Crezy.Remote.CONNECT      = 'connect';
-Crezy.Remote.PRESENTATION = 'pres';
-Crezy.Remote.NOTES        = 'notes';
-Crezy.Remote.STEP         = 'step';
+Crezy.Remote.rpcMethods = {
+    'connect': function() {},
+    'disconnect': function() {},
+    'getPresentation': function() {},
+    'setPresentation': function() {},
+    'getStep': function() {},
+    'setStep': function() {}
+};
+
+function buildAddress(address) {
+    if (!address) throw "Address is null";
+
+    if (typeof address == 'string') {
+        if (address.split('://').length == 1) address = 'ws://' + address;
+        return new URL(address);
+    } else if (address instanceof URL) {
+        return address;
+    }
+    return null;
+}
 
 Crezy.Remote.prototype.connect = function() {
 
@@ -30,7 +36,7 @@ Crezy.Remote.prototype.connect = function() {
 
     // When the connection is open, send some data to the server
     this._socket.onopen = function (evt) {
-        console.log('Connected to websocket at: '+this.address);
+        console.log('Connected to websocket', evt);
         this.connected = true;
     };
 
@@ -48,7 +54,7 @@ Crezy.Remote.prototype.handleMessage = function (evt) {
     var msg = JSON.parse(evt.data);
     
     switch (msg.id) {
-    case CONNECTION:
+    case 'connect':
         if (msg.connect == true) {
             this.connected = true;
         } else {
@@ -56,37 +62,31 @@ Crezy.Remote.prototype.handleMessage = function (evt) {
         }
         break;
     
-    case NOTES:
-        this.send(NOTES, {});
-        break;
-    
-    case STEP:
+    case 'step':
         var step = parseInt(msg.what);
-        if (msg.verb == 'get') {
-            this.send(STEP, {step: 5});
+
+        if (isFinite(step)) {
+            Crezy.impress.goto(step);
+        } else if (msg.what == 'next') {
+            Crezy.impress.next();
+        } else if (msg.what == 'prev') {
+            Crezy.impress.prev();
         }
 
-        if (!isFinite(step)) {
-            console.log('Expecting an int', msg.what);
-            break;
-        }
-
-        Crezy.impress.goto(step);
         break;
 
     default: break;
     }
 };
 
-
 Crezy.Remote.prototype.send = function(msgID, msgBody) {
     if (!msgID) throw "msgID is mandatory";
     //goog.object.extend(msg, body);
 
-    this._socket.send({
+    this._socket.send(JSON.stringify({
         id: msgID,
         body: msgBody
-    });
+    }));
 }
 
 Crezy.Remote.prototype.bindPresentation = function(presentation) {
