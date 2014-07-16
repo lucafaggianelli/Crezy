@@ -1,0 +1,55 @@
+<html>
+<head>
+</head>
+
+<body style="margin:0;padding:0;">
+<canvas id="crezy" width="500" height="300"></canvas>
+
+<script src="server/static/vendor/createjs-2013.12.12.min.js"></script>
+
+<script>
+var elems = [], canvas, stage;
+var steps = [
+    [0,0,1],
+    [200,200,.5]
+];
+
+//Crezy.getPresentation('');
+window.onload = function() {
+    canvas = document.getElementById('crezy');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    stage = new createjs.Stage(canvas);
+    createjs.Ticker.addEventListener("tick", stage);
+    createjs.Ticker.setFPS(60);
+    
+    elems[0] = new createjs.Text("Crezy is awesome", "40px Arial", "#FF7700");
+    elems[0].x = 0;
+    elems[0].y = 0;
+    var box = elems[0].getBounds();
+    elems[0].regX = box.width / 2;
+    elems[0].regY = box.height / 2;
+    stage.addChild(elems[0]);
+
+    elems[1] = new createjs.Shape();
+    elems[1].graphics.beginFill('blue').drawCircle(200,200,50);
+    elems[1].scaleX = .5;
+    elems[1].scaleY = .5;
+    stage.addChild(elems[1]);
+
+    stage.update();
+}
+
+function setStep(i) {
+    createjs.Tween.get(stage).to({
+        x: window.innerWidth/2 - steps[i][0],
+        y: window.innerHeight/2 - steps[i][1],
+        scaleX: 1/steps[i][2],
+        scaleY: 1/steps[i][2]
+    },1000, createjs.Ease.quadInOut);
+}
+</script>
+
+</body>
+</html>

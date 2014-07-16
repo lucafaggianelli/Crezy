@@ -13,7 +13,15 @@ Crezy.Text.prototype.edit = function() {
 };
 
 Crezy.Text.prototype.draw = function() {
-    this.ui = $('<p id="'+this.id+'" class="element" data-type="text">' + this.content + '</p>');
+    this.ui = new createjs.Text(this.content, "40px Arial", "#404040");
+    console.log(this);
+    var box = this.ui.getBounds();
+    this.ui.regX = box.width / 2;
+    this.ui.regY = box.height / 2;
+    this.ui.scaleX = this.ui.scaleY = this.scale;
+    this.ui.x = this.x;
+    this.ui.y = this.y;
+
     return this.ui;
 };
 

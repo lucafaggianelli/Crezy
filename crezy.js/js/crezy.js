@@ -8,44 +8,34 @@ goog.require('Crezy.Presentation');
 goog.require('Crezy.Remote')
 
 window.onload = function() {
-    Crezy.impress = impress();
     Crezy.init();
 };
 
 Crezy.init = function() {
     Crezy.ui = new Crezy.Ui();
-    
-    document.addEventListener('impress:init', Crezy._onInit);
-    document.addEventListener('impress:stepenter', Crezy._onStepEnter);
-    document.addEventListener('impress:stepleave', Crezy._onStepLeave);
 };
 
 Crezy.loadPresentation = function(id) {
     
-    Crezy.getPresentation(id, function() {
-        Crezy.presentation = this;
-        document.title = Crezy.presentation.title;
+    Crezy.getPresentation(id, function(pres) {
+        Crezy.presentation = new Crezy.Presentation(pres);
+        document.title = "Crezy | " + Crezy.presentation.title;
 
-        Crezy.drawSlides(Crezy.presentation.slides);
-        Crezy.impress.init();
+        var elem;
+        for (var i in Crezy.presentation.elements) {
+            Crezy.ui.stage.addChild(Crezy.presentation.elements[i].draw());
+        }
     });
 };
 
-Crezy.getPresentation = function(id,callback) {
+Crezy.getPresentation = function(id, callback, context) {
     if (!id) throw 'Provide a presentation id';
+    context = context || null;
     
     $.get('/static/presentations/'+id+'.json', function(data) {
-        if (callback instanceof Function) callback.call(data);
+        if (callback instanceof Function) callback.call(context, data);
     },
     'json');
-};
-
-Crezy.drawSlides = function(slides) {
-    var slide, step;
-    for (var i=0; i<slides.length; i++) {
-        slide = new Crezy.Slide(slides[i]);
-        Crezy.ui.canvas.append(slide.draw());
-    }
 };
 
 Crezy.updateProgress = function(p) {

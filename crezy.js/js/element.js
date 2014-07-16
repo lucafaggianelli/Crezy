@@ -1,19 +1,18 @@
 goog.provide('Crezy.Element');
 
 Crezy.Element = function(args) {
-    var json = {id: Crezy.utils.makeId(), position: [0,0], size: ['auto','auto'], style: {}};
+    var json = {id: Crezy.utils.makeId(), position: [0,0], size: ['auto','auto'], style: {}, content: ''};
     $.extend(json,args);
     
     this.id = json.id;
     this.type = json.type;
-    this.position = [json.position[0], json.position[1]];
-    this.size = [json.size[0], json.size[1]];
-    this.content = json.content || '';
+    //this.position = [json.position[0], json.position[1]];
+    //this.size = [json.size[0], json.size[1]];
+    //this.content = json.content;
+    //this.style = json.style;
 
-    this.style = json.style;
-
-    this._toSave = ['id','type','position','size','style'];
-    this._save = function(props) {
+    //this._toSave = ['id','type','position','size','style'];
+    /*this._save = function(props) {
         // Update params
         this.position = [this.ui.position().left, this.ui.position().top];
         this.size = [this.ui.width(), this.ui.height()];
@@ -23,26 +22,15 @@ Crezy.Element = function(args) {
             toStringify[p] = _this[p];
         });
         return JSON.stringify(toStringify);
-    };
+    };*/
     
-    this._x = this.x = function(set) {
-        if (!set) return this.ui.css('left');
-        else this.ui.css('left',set); return this;
-    };
-    this._y = this.y = function(set) {
-        if (!set) return this.ui.css('top');
-        else this.ui.css('top',set); return this;
-    };
-    this._width = this.width = function(set) {
-        if (!set) return this.ui.width();
-        else this.ui.width(set); return this;
-    };
-    this._height = this.height = function(set) {
-        if (!set) return this.ui.height();
-        else this.ui.height(set); return this;
-    };
+    this.x = json.x;
+    this.y = json.y;
+    this.scale = json.s;
+    this.ui = null;
+    this.content = json.content;
 
-    this.rotate = function(axis, angle) {
+    /*this.rotate = function(axis, angle) {
         var css, done = false, increment = false;
         axis = axis.toUpperCase();
         
@@ -82,7 +70,7 @@ Crezy.Element = function(args) {
     }
     this.rotateX = function(angle) { return this.rotate('x', angle) };
     this.rotateY = function(angle) { return this.rotate('y', angle) };
-    this.rotateZ = function(angle) { return this.rotate('z', angle) };
+    this.rotateZ = function(angle) { return this.rotate('z', angle) };*/
 }
 
 Crezy.Element.prototype.draw = function() {}

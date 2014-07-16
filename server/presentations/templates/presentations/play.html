@@ -1,16 +1,15 @@
 {% extends "layout.html" %}
 
 {% block head %}
-<link href="/static/css/impress.css" rel="stylesheet" />
 {% endblock %}
 
 {% block bodyclass %}impress-not-supported{% endblock %}
 
 {% block body %}
 
-<div id="impress"></div>
+<canvas id="crezy-canvas"></canvas>
 
-<script src="/static/js/impress.js"></script>
+<script src="/static/vendor/createjs-2013.12.12.min.js"></script>
 <script src="/static/js/jquery.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 
