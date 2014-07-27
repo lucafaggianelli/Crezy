@@ -7,12 +7,13 @@
 {% block bodyclass %}{% endblock %}
 
 {% block body %}
-<div id="canvas" draggable="true"></div>
+<canvas id="crezy-background"></canvas>
+<canvas id="crezy-grid"></canvas>
+<canvas id="crezy-canvas"></canvas>
 
 <div id="overview"></div>
 
-<script src="/static/js/nicEdit.js"></script>
-<script src="/static/js/impress-editor.js"></script>
+<script src="/static/vendor/createjs-2013.12.12.min.js"></script>
 <script src="/static/js/jquery.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 

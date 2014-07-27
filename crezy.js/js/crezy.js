@@ -7,9 +7,9 @@ goog.require('Crezy.Element');
 goog.require('Crezy.Presentation');
 goog.require('Crezy.Remote')
 
-window.onload = function() {
-    Crezy.init();
-};
+//window.onload = function() {
+    //Crezy.init();
+//};
 
 Crezy.init = function() {
     Crezy.ui = new Crezy.Ui();
@@ -17,14 +17,17 @@ Crezy.init = function() {
 
 Crezy.loadPresentation = function(id) {
     
+    Crezy.preload = new createjs.LoadQueue(false, '/static/presentations/'+id+'/');
+    Crezy.preload.on("fileload", onFileLoad,this);
+    Crezy.preload.on("progress", onFileProgress,this);
+    Crezy.preload.on("complete", onLoadComplete,this);
+    Crezy.preload.on("error", onLoadError,this);
+
     Crezy.getPresentation(id, function(pres) {
         Crezy.presentation = new Crezy.Presentation(pres);
         document.title = "Crezy | " + Crezy.presentation.title;
 
-        var elem;
-        for (var i in Crezy.presentation.elements) {
-            Crezy.ui.stage.addChild(Crezy.presentation.elements[i].draw());
-        }
+        Crezy.preload.loadManifest(Crezy.presentation.resources);
     });
 };
 
@@ -33,10 +36,51 @@ Crezy.getPresentation = function(id, callback, context) {
     context = context || null;
     
     $.get('/static/presentations/'+id+'.json', function(data) {
-        if (callback instanceof Function) callback.call(context, data);
-    },
-    'json');
+            if (callback instanceof Function) callback.call(context, data);
+        },'json')
+        .fail(function( jqxhr, textStatus, error ) {
+            var err = textStatus + ", " + error;
+            console.log( "Request Failed: " + err );
+        });
 };
+
+function onFileLoad(event) {
+    console.log("A file has loaded of type: " + event.item.type);
+}
+ 
+function onLoadError(evt) {
+    console.log("Error!",evt.text);
+}
+
+function onFileProgress(event) {
+    console.log((Crezy.preload.progress*100|0) + " % Loaded");
+    //stage.update();
+}
+ 
+function onLoadComplete(event) {
+    console.log("Finished Loading Assets");
+    
+    var b = Crezy.presentation.backgrounds[0];
+    var img = new createjs.Bitmap(Crezy.preload.getResult(b.id));
+    
+    var box = img.getBounds();
+    img.regX = box.width / 2;
+    img.regY = box.height / 2;
+    img.x = window.innerWidth / 2;
+    img.y = window.innerHeight / 2;
+
+    var s = Math.max(window.innerWidth/box.width, window.innerHeight/box.height);
+    img.scaleX = img.scaleY = s;
+
+    //for (var i in Crezy.presentation.background) {
+        Crezy.ui.stageBkg.addChild(img);
+    //}
+    Crezy.ui.stageBkg.update();
+
+    for (var i in Crezy.presentation.elements) {
+        Crezy.ui.stage.addChild(Crezy.presentation.elements[i].draw());
+    }
+}
 
 Crezy.updateProgress = function(p) {
     this.ui.seekbar.set(p * 100);

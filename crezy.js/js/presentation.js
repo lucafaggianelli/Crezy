@@ -3,21 +3,25 @@ goog.provide('Crezy.Presentation');
 goog.require('Crezy.utils');
 
 Crezy.Presentation = function(args) {
-    var json = {};
-    $.extend(json, {id: Crezy.utils.makeId(), title: "New presentation", author: 'me', description: 'No description'}, args);
+    if (!args.id) throw 'No ID in the presentation';
+    this.json = {};
+    $.extend(this.json, {resources:{}, style:{}}, args);
     
-    this.id = json.id;
-    this.title = json.title;
-    this.description = json.description;
-    this.author = json.author;
+    this.id = args.id;
+    this.title = args.title;
+    this.description = args.description;
+    this.author = args.author;
     
     this.settings = {};
+    this.style = args.style;
+    this.backgrounds = args.backgrounds;
+    this.resources = args.resources;
 
-    this.elements = [];
+    this.elements = {};
     var elem;
-    for (var i in args.canvas) {
-        elem = Crezy.Element.newInstance(args.canvas[i]);
-        this.elements.push(elem);
+    for (var i in args.elements) {
+        elem = Crezy.Element.newInstance(args.elements[i]);
+        this.elements[i] = elem;
     };delete elem;
 
     // Init slides

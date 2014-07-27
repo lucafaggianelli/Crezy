@@ -11,20 +11,30 @@
     "social": {"facebook":true,"twitter":true}
 },
 
-"background": {
-    "color": "#2d8e87"
+"backgrounds": [
+    {"type":"image", "id":"img_0"},
+    {"type":"color", "value":"#2d8e87"}
+],
+
+"style": {
+    "font": "PT Serif",
+    "color": "#FFFFFF"
 },
 
-"canvas": [
-    {"type": "image", "w":1024, "h":768, "content":"755458157.jpe",
-        "x":573673.2922542918, "y":87192.19819829463, "r":0, "s":620.8078823261151},
-
-    {"type": "image", "w":1121, "h":1389, "content":"755488943.png",
-        "x":765904.7756887459, "y":258772.8509825864, "r":0, "s":59.84998792993918},
-        
-    {"type": "text", "w":172.4653118511107, "h": 65.3671875, "x": -554428.4731899527, "y": -247964.5891427848, 
-        "s":6337.799464249719, "content": "Thanks for your attention"},
+"elements": {
+    "0": {"type": "image", "w":1024, "h":768, "src":"img_1", "id":"0",
+            "x":0, "y":0, "r":0, "s":1},
+       
+    "1": {"type": "text", "w":172.4653118511107, "h": 65.3671875, "x": 0, "y": 0, "id":"1",
+            "s":1, "content": "Greetings from,"},
     
-    {"type": "text", "w":186.3515625, "h": 32.68359375, "x": -554322.3061177807, "y": 82226.06949993505, 
-        "s":6337.799464249719, "content": "Luca Faggianelli"}
-]}
+    "2":{"type": "text", "w":186.3515625, "h": 32.68359375, "x": 100, "y": 100, "id":"2",
+            "s":1, "content": "New York"}
+},
+
+"resources": [
+    {"id": "img_0", "src": "new-york.jpg"},
+    {"id": "img_1", "src": "hydrant.png"}
+]
+
+}

@@ -1,16 +1,33 @@
 goog.provide('Crezy.Ui');
 
+var pan = {
+        mouseDown: false,
+        dX:0, dY:0,
+        offsetX:0, offsetY:0};
+
 Crezy.Ui = function() {
     this.logo = null;
 
-    // Canvas elements
+    // Main Canvas element
     this.canvas = $('#crezy-canvas')[0];
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
-    
     this.stage = new createjs.Stage(this.canvas);
+
+    // Background Canvas element
+    this.background = $('#crezy-background')[0];
+    this.background.width = window.innerWidth;
+    this.background.height = window.innerHeight;
+    this.stageBkg = new createjs.Stage(this.background);
+
     createjs.Ticker.addEventListener("tick", this.stage);
     createjs.Ticker.setFPS(50);
+    
+    // Zoom and pan
+    $(document.body).bind('mousewheel', _onMouseScroll)
+    //this.canvas.onmousedown = this.onPanCanvasStart;
+    //this.canvas.onmousemove = this.onPanCanvas;
+    //document.onmouseup = this.onPanCanvasStop;
     
     if (false) {
         this.logo = $('<div id="logo"></div>');
@@ -19,6 +36,43 @@ Crezy.Ui = function() {
     
     if (true) {
         this.seekbar = new Crezy.Ui.Seekbar();
+    }
+}
+
+function _onMouseScroll(event) {
+    if (event.originalEvent.wheelDeltaY == 0) return;
+    var zoomDir = event.originalEvent.wheelDeltaY > 0 ? 1.1 : 0.9;
+    Crezy.ui.stage.scaleX = Crezy.ui.stage.scaleY = Crezy.ui.stage.scaleY * zoomDir;
+}
+
+Crezy.Ui.prototype.onPanCanvasStart = function(event) {
+    // store current position to calc deltas
+    pan.dX = event.clientX - Crezy.ui.stage.x;
+    pan.dY = event.clientY - Crezy.ui.stage.y;
+    pan.mouseDown = true;
+}
+
+Crezy.Ui.prototype.onPanCanvas = function(event) {
+    // in a drag?
+    if (pan.mouseDown === true) {
+        // offset = current - original position
+        pan.offsetX = event.clientX - pan.dX;
+        pan.offsetY = event.clientY - pan.dY; 
+
+        Crezy.ui.stage.x = pan.offsetX;
+        Crezy.ui.stage.y = pan.offsetY;
+    }
+}
+
+Crezy.Ui.prototype.onPanCanvasStop = function(event) {
+
+    // was in a drag?
+    if (pan.mouseDown === true) {
+        // not any more!!!
+        pan.mouseDown = false;
+
+        // so we need to reset offsets as well
+        pan.offsetX = pan.offsetY = 0;
     }
 }
 

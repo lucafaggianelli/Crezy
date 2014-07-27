@@ -1,5 +1,7 @@
 goog.provide('Crezy.Editor');
 
+goog.require('Crezy');
+
 goog.require('Crezy.Editor.Canvas');
 goog.require('Crezy.Editor.Grid');
 goog.require('Crezy.Editor.KeyListener');
@@ -10,6 +12,7 @@ goog.require('Crezy.Slide');
 goog.require('Crezy.Presentation');
 
 window.onload = function() {
+    Crezy.init();
     Crezy.editor = new Crezy.Editor();
 }
 
@@ -18,8 +21,6 @@ window.onload = function() {
  * --------------o---------------------> Z
  */
 Crezy.Editor = function() {
-    Crezy.impress = impress('canvas');
-
     Crezy.currentElement = null;
     
     // Grid is behind everything
@@ -36,8 +37,6 @@ Crezy.Editor = function() {
 
     //Crezy.keyListener = new Crezy.Editor.KeyListener();
     
-    //this.canvas.ui.on('mouseenter', '.element,#toolbar-container', this.show);
-
     /** Bind listeners **/
     
     this.ui = $('#canvas')
@@ -71,46 +70,4 @@ Crezy.Editor = function() {
             default: break;
         }
     });
-};
-
-Crezy.Editor.prototype.save = function(presentation) {
-    if (!Modernizr.localstorage) {
-        console.log('LocalStorage not supported');
-        return;
-    }
-    if (!presentation) return;
-    
-    for (var i in presentation.elements) presentation.elements[i]._save();
-    localStorage['crezy'] = JSON.stringify(presentation);
-    return true;
-};
-
-/*
-Crezy.savePresentation = function() {
-    .save(Crezy.presentation);
-};*/
-
-Crezy.editSlides = function(slides) {
-    for (var i in slides) {
-        Crezy.canvas.ui.append(slides[i].edit());
-    }
-};
-
-Crezy.loadPresentation = function(id) {
-    Crezy.getPresentation(id, function() {
-        Crezy.presentation = new Crezy.Presentation(this);
-        document.title = 'Editing | ' + Crezy.presentation.title;
-
-        Crezy.editSlides(Crezy.presentation.slides);
-        Crezy.impress.init();
-    });
-};
-
-Crezy.getPresentation = function(id,callback) {
-    if (!id) throw 'Provide a presentation id';
-    
-    $.get('/static/presentations/'+id+'.json', function(data) {
-        if (callback instanceof Function) callback.call(data);
-    },
-    'json');
 };

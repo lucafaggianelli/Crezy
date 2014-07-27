@@ -59,10 +59,12 @@ table {
 
 /* Start styling */
 
-.step {
+#crezy-grid {
     position: absolute;
+    top:0;
+    left:0;
+    z-index:20;
 }
-
 
 /* Toolbar */
 #toolbar-container {
