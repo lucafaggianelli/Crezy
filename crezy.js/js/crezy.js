@@ -7,9 +7,9 @@ goog.require('Crezy.Element');
 goog.require('Crezy.Presentation');
 goog.require('Crezy.Remote')
 
-//window.onload = function() {
-    //Crezy.init();
-//};
+window.onload = function() {
+    Crezy.init();
+};
 
 Crezy.init = function() {
     Crezy.ui = new Crezy.Ui();

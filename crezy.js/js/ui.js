@@ -13,7 +13,7 @@ Crezy.Ui = function() {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.stage = new createjs.Stage(this.canvas);
-
+    
     // Background Canvas element
     this.background = $('#crezy-background')[0];
     this.background.width = window.innerWidth;

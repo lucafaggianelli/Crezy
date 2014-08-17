@@ -2,14 +2,25 @@
 
 {% block head %}
 <link href="/static/css/editor.css" rel="stylesheet" />
+<link href="/static/vendor/font-awesome-4.0.3/css/font-awesome.min.css" rel="stylesheet" />
 {% endblock %}
 
 {% block bodyclass %}{% endblock %}
 
 {% block body %}
-<canvas id="crezy-background"></canvas>
-<canvas id="crezy-grid"></canvas>
-<canvas id="crezy-canvas"></canvas>
+<div id="main-content">
+    <canvas id="crezy-background"></canvas>
+    <canvas id="crezy-grid"></canvas>
+    <canvas id="crezy-canvas"></canvas>
+    <div id="editor-ui">
+        <div id="sidebar-container">
+            <p>Move</p>
+            <p>Text</p>
+            <p>Image</p>
+        </div>
+    </div>
+    <div class="clearfloat"></div>
+</div>
 
 <div id="overview"></div>
 

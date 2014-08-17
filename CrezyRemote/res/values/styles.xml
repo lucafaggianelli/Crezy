@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -15,9 +15,18 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:textColor">@color/text_color</item>
     </style>
 
+    <style name="ButtonTheme">
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:padding">5sp</item>
+        <item name="android:paddingTop">15sp</item>
+        <item name="android:paddingBottom">15sp</item>
+        <item name="android:layout_margin">5sp</item>
+    </style>
+    
     <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@null</item>

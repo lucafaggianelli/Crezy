@@ -3,7 +3,8 @@ goog.provide('Crezy.Element');
 Crezy.Element = function(args) {
     if (!args.id) throw "Need an ID"
 
-    var json = {position: [0,0], size: ['auto','auto'], style: {}, content: ''};
+    var json = {position: [0,0], size: ['auto','auto'], style: {}, content: '',
+        title:null, description:null};
     $.extend(json,args);
     
     this.id = json.id;
@@ -13,6 +14,8 @@ Crezy.Element = function(args) {
     this.scale = json.s;
     this.ui = null;
     this.content = json.content;
+    this.title = json.title;
+    this.description = json.description;
 }
 
 Crezy.Element.prototype.draw = function() {}

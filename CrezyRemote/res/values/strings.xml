@@ -2,7 +2,15 @@
 <resources>
 
     <string name="app_name">CrezyRemote</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-
+    
+    <!-- Presentation -->
+    <string name="presentation_none">No Presentation!</string>    
+    
+    <!-- Controls -->
+    <string name="prev_step">Previous</string>
+    <string name="next_step">Next</string>
+    <string name="play_presentation">Play</string>
+    <string name="first_step">First</string>
+    <string name="last_step">Last</string>
+    
 </resources>

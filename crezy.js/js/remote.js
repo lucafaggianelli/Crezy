@@ -5,17 +5,8 @@ goog.require('goog.object');
 Crezy.Remote = function(address) {
     this.address = buildAddress(address || null);
     this.connected = false;
-    this._socket = null;
+    Crezy.Remote._socket = null;
     this.pres = null;
-};
-
-Crezy.Remote.rpcMethods = {
-    'connect': function() {},
-    'disconnect': function() {},
-    'getPresentation': function() {},
-    'setPresentation': function() {},
-    'getStep': function() {},
-    'setStep': function() {}
 };
 
 function buildAddress(address) {
@@ -32,62 +23,124 @@ function buildAddress(address) {
 
 Crezy.Remote.prototype.connect = function() {
 
-    this._socket = new WebSocket(this.address);
+    Crezy.Remote._socket = new WebSocket(this.address);
 
     // When the connection is open, send some data to the server
-    this._socket.onopen = function (evt) {
+    Crezy.Remote._socket.onopen = function (evt) {
         console.log('Connected to websocket', evt);
         this.connected = true;
     };
 
     // Log errors
-    this._socket.onerror = function (error) {
+    Crezy.Remote._socket.onerror = function (error) {
         console.log(error);
         throw 'WebSocket Error. Cant connect to remote at: '+this.address;
     };
 
     // Log messages from the server
-    this._socket.onmessage = this.handleMessage;
+    Crezy.Remote._socket.onmessage = this.handleMessage;
+};
+
+/*
+ * Definition of RPC methods
+ */
+Crezy.Remote.methods = {
+    connect: function() {
+        this.connected = true;
+    },
+
+    getPresentation: function() {
+        return JSON.stringify(Crezy.presentation.json);
+    },
+
+    setPresentation: function(pId) {
+    
+    },
+
+    getStep: function() {
+        return Crezy.presentation ? Crezy.presentation.getCurrentStep() : -1;
+    },
+
+    setStep: function(step) {
+        if (!Crezy.presentation || step == undefined || step == null) return;
+        
+        var dict = {
+            next: Crezy.presentation.getCurrentStep() + 1,
+            prev: Crezy.presentation.getCurrentStep() - 1,
+            first: 0,
+            last: Crezy.presentation.stepsCount-1};
+
+        var stepInt = NaN;
+        if (dict.hasOwnProperty(step)) {
+            stepInt = dict[step];
+            console.log('Step kw:',step,stepInt);
+            //if (step < 0) step = 0;
+            //else if (step >= Crezy.presentation.stepsCount) step = Crezy.presentation.stepsCount-1;
+        } else {
+            stepInt = parseInt(step);
+            console.log('Parsed int',stepInt);
+        }
+
+        if (isFinite(stepInt) && (stepInt>=0) && (stepInt<Crezy.presentation.stepsCount)) {
+            Crezy.presentation.setCurrentStep(stepInt);
+        } else {
+            throw "Step ID not valid: " + step;
+        }
+
+        return true;
+    },
+
+    present: function(what) {
+        if (what == 'play') {
+            console.log("Presentation started @ 3s")
+            Crezy.presentation.timer = setInterval(function() {
+                Crezy.presentation.setCurrentStep(Crezy.presentation.getCurrentStep()+1)
+            },3000);
+        } else if (what == 'pause') {
+            console.log("Presentation paused");
+            clearInterval(Crezy.presentation.timer);
+        }
+    }
 };
 
 Crezy.Remote.prototype.handleMessage = function (evt) {
     var msg = JSON.parse(evt.data);
-    
-    switch (msg.id) {
-    case 'connect':
-        if (msg.connect == true) {
-            this.connected = true;
-        } else {
-            this.connected = false;
-        }
-        break;
-    
-    case 'step':
-        var step = parseInt(msg.what);
 
-        if (isFinite(step)) {
-            Crezy.impress.goto(step);
-        } else if (msg.what == 'next') {
-            Crezy.impress.next();
-        } else if (msg.what == 'prev') {
-            Crezy.impress.prev();
-        }
+    msg.id = msg.id || 0;
 
-        break;
+    if (!msg.method)
+        throw 'Invalid message, need a method';
+    if (!Crezy.Remote.methods.hasOwnProperty(msg.method))
+        throw 'Invalid method: '+msg.method;
 
-    default: break;
-    }
+    var response = Crezy.Remote.methods[msg.method].apply(null,msg.args);
+
+    Crezy.Remote.respond(msg.id, msg.method,response);
 };
 
-Crezy.Remote.prototype.send = function(msgID, msgBody) {
-    if (!msgID) throw "msgID is mandatory";
-    //goog.object.extend(msg, body);
+Crezy.Remote.respond = function(id, method, response) {
+    id = id || 0;
 
-    this._socket.send(JSON.stringify({
-        id: msgID,
-        body: msgBody
+    if (!method) throw "Method is required";
+
+    Crezy.Remote._socket.send(JSON.stringify({
+        id: id,
+        method: method,
+        response: response
     }));
-}
+};
+
+Crezy.Remote.send = function(id, method, args) {
+    id = id || 0;
+
+    if (!method) throw "Method is required";
+
+    Crezy.Remote._socket.send(JSON.stringify({
+        id: id,
+        method: method,
+        args: args
+    }));
+};
 
 Crezy.Remote.prototype.bindPresentation = function(presentation) {
     if (!(presentation instanceof Crezy.Presentation)) throw 'Need a Crezy.Presentation as argument';

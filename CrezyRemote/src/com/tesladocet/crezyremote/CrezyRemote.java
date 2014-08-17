@@ -3,11 +3,13 @@ package com.tesladocet.crezyremote;
 import java.net.UnknownHostException;
 
 import org.java_websocket.WebSocket;
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.tesladocet.crezyremote.util.SystemUiHider;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
@@ -23,6 +25,11 @@ import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -30,23 +37,43 @@ import android.view.View;
  *
  * @see SystemUiHider
  */
-public class CrezyRemote extends Activity {
+public class CrezyRemote extends Activity implements OnSeekBarChangeListener {
 	
 	private static final String LOG_TAG = "CrezyRemote";
 
-    CrezyWebSocketServer server;
-    WebSocket client = null;
+    static CrezyWebSocketServer server;
+    static Presentation presentation = null;
 
-    @Override
+    static SeekBar seekbar = null;
+    static TextView titleView = null;
+    static TextView stepTitleView = null;
+    static ImageButton playButton = null;
+    
+    @SuppressLint("NewApi") @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        if (Build.VERSION.SDK_INT < 16) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+        	View decorView = getWindow().getDecorView();
+        	decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+        	getActionBar().hide();
+        }
 
         setContentView(R.layout.crezy_remote);
+        seekbar = (SeekBar) findViewById(R.id.seekbar);
+        seekbar.setOnSeekBarChangeListener(this);
+
+        titleView = (TextView) findViewById(R.id.presentation_title);
+        stepTitleView = (TextView) findViewById(R.id.step_title);
+        playButton = (ImageButton) findViewById(R.id.button_play);
         
         try {
-			server = new CrezyWebSocketServer(newClientsHandler, 8888);
+			server = new CrezyWebSocketServer(wsHandler, 8888);
 			server.start();
-			Log.d(LOG_TAG, "Started on: "+server.getAddress().toString()+":"+server.getPort());
+			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
@@ -68,25 +95,93 @@ public class CrezyRemote extends Activity {
     }
     
     public void onButtonClick(View v) {
-    	Log.d(LOG_TAG, "Clicked id: " + v.getId());
     	switch (v.getId()) {
 		case R.id.button_next:
-			server.send("step", "next");
+			server.send(0,"setStep","next");
+			updateCurrentStep(presentation.currentStep+1);
 			break;
 			
 		case R.id.button_prev:
-			server.send("step", "prev");
+			server.send(0,"setStep","prev");
+			updateCurrentStep(presentation.currentStep-1);
 			break;
 
+		case R.id.button_first:
+			server.send(0,"setStep","first");
+			updateCurrentStep(0);
+			break;
+			
+		case R.id.button_last:
+			server.send(0,"setStep","last");
+			updateCurrentStep(presentation.stepsCount-1);
+			break;
+			
+		case R.id.button_play:
+			if (presentation.isPlaying) {
+				server.send(0, "present","pause");
+				presentation.isPlaying = false;
+				playButton.setImageResource(R.drawable.ic_action_play_over_video);
+			} else {
+				server.send(0, "present","play");
+				presentation.isPlaying = true;
+				playButton.setImageResource(R.drawable.ic_action_pause_over_video);
+			}
+			break;
+			
 		default:
 			break;
 		}
     }
     
-    public Handler newClientsHandler = new Handler() {
+    static public Handler wsHandler = new Handler() {
     	@Override
     	public void handleMessage(Message msg) {
-    		client = (WebSocket) server.connections().toArray()[0];
+    		switch (msg.what) {
+			case 0:
+				Log.i(LOG_TAG, "Connected");
+				server.send(0, "getPresentation", null);
+				break;
+
+			case 1:
+				Log.i(LOG_TAG, "Got a new presentation");
+				try {
+					presentation = new Presentation(new JSONObject((String)msg.obj));
+				} catch (JSONException e) {
+					Log.w(LOG_TAG,"Not a valid presentation");
+				}
+				
+				titleView.setText(presentation.title);
+				seekbar.setMax(presentation.stepsCount-1);
+				seekbar.setProgress(0);
+				break;
+				
+			default:
+				break;
+			}
     	}
     };
+
+    public void updateCurrentStep(int step) {
+    	if (presentation != null) {
+    		presentation.currentStep = step;
+    		seekbar.setProgress(step);
+    		stepTitleView.setText("Step "+(step+1));
+    	}
+    }
+    
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress,
+			boolean fromUser) {
+	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {		
+		server.send(0, "setStep", ""+seekBar.getProgress());
+		updateCurrentStep(seekBar.getProgress());
+	}
 }

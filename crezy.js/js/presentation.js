@@ -2,10 +2,11 @@ goog.provide('Crezy.Presentation');
 
 goog.require('Crezy.utils');
 
-Crezy.Presentation = function(args) {
-    if (!args.id) throw 'No ID in the presentation';
-    this.json = {};
-    $.extend(this.json, {resources:{}, style:{}}, args);
+Crezy.Presentation = function(pres) {
+    if (!pres.id) throw 'No ID in the presentation';
+    this.json = JSON.parse(JSON.stringify(pres));
+    var args = {resources:{}, style:{}};
+    $.extend(args, pres);
     
     this.id = args.id;
     this.title = args.title;
@@ -18,26 +19,27 @@ Crezy.Presentation = function(args) {
     this.resources = args.resources;
 
     this.elements = {};
+    this.stepsCount = 0;
+    this.currentStep = -1;
     var elem;
     for (var i in args.elements) {
         elem = Crezy.Element.newInstance(args.elements[i]);
         this.elements[i] = elem;
+        this.stepsCount++;
     };delete elem;
-
-    // Init slides
-    this.slidesCount = 0;
-    this.slides = {};
-    /*var _this;
-    for (var i in json.slides) {
-        _this = json.slides[i];
-        _this.id = _this.id||'slide-'+i;
-        this.slides[_this.id] = new Crezy.Slide(_this);
-        this.slidesCount++;
-    }; delete _this;*/
+    this.json.stepsCount = this.stepsCount;
 }
 
-Crezy.Presentation.prototype.setFocusOnStep = function(step) {
+Crezy.Presentation.prototype.getCurrentStep = function() {
+    if (this.currentStep == null || this.currentStep == undefined)
+        this.currentStep = -1;
+
+    return this.currentStep;
+}
+
+Crezy.Presentation.prototype.setCurrentStep = function(step) {
     var e = this.elements[step];
+    Crezy.presentation.currentStep = step;
 
     createjs.Tween.get(Crezy.ui.stage).to({
         x: window.innerWidth/2 - e.x/e.scale,

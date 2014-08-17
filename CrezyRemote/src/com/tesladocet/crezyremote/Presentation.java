@@ -10,7 +10,9 @@ public class Presentation {
 	
 	public String id = "";
 	public String title = "";
-	public int slidesCount = 0;
+	public int stepsCount = 0;
+	public int currentStep = 0;
+	public boolean isPlaying = false;
 	public SparseIntArray slidesTimeout = new SparseIntArray();
 	
 	public Presentation() {
@@ -21,12 +23,12 @@ public class Presentation {
 		try {
 			id = j.getString("id");
 			title = j.getString("title");
-			slidesCount = j.getInt("slidesCount");
+			stepsCount = j.getInt("stepsCount");
 			
-			JSONArray times = j.getJSONArray("slidesTimeout");
-			for (int i = 0; i < times.length(); i++) {
-				slidesTimeout.put(i, (Integer) times.get(i));
-			}
+//			JSONArray times = j.getJSONArray("slidesTimeout");
+//			for (int i = 0; i < times.length(); i++) {
+//				slidesTimeout.put(i, (Integer) times.get(i));
+//			}
 			
 		} catch (JSONException e) {
 			e.printStackTrace();
