@@ -2,20 +2,21 @@ goog.provide('Crezy');
 
 goog.require('Crezy.utils');
 goog.require('Crezy.Ui');
+goog.require('Crezy.Background');
 goog.require('Crezy.Slide');
 goog.require('Crezy.Element');
 goog.require('Crezy.Presentation');
-goog.require('Crezy.Remote')
-
-window.onload = function() {
-    Crezy.init();
-};
+goog.require('Crezy.Remote');
+goog.require('Crezy.Animations');
+goog.require('Crezy.KeysManager');
 
 Crezy.init = function() {
     Crezy.ui = new Crezy.Ui();
+    Crezy.background = new Crezy.Background();
+    Crezy.keysManager = new Crezy.KeysManager();
 };
 
-Crezy.loadPresentation = function(id) {
+Crezy.loadPresentation = function(id, callback) {
     
     Crezy.preload = new createjs.LoadQueue(false, '/static/presentations/'+id+'/');
     Crezy.preload.on("fileload", onFileLoad,this);
@@ -28,6 +29,8 @@ Crezy.loadPresentation = function(id) {
         document.title = "Crezy | " + Crezy.presentation.title;
 
         Crezy.preload.loadManifest(Crezy.presentation.resources);
+
+        if (callback instanceof Function) callback.call(null);
     });
 };
 
@@ -54,13 +57,14 @@ function onLoadError(evt) {
 
 function onFileProgress(event) {
     console.log((Crezy.preload.progress*100|0) + " % Loaded");
-    //stage.update();
+    //stage.updateProgress();
 }
  
 function onLoadComplete(event) {
     console.log("Finished Loading Assets");
     
-    var b = Crezy.presentation.backgrounds[0];
+    // Draw background
+    var b = Crezy.presentation.backgrounds[1];
     var img = new createjs.Bitmap(Crezy.preload.getResult(b.id));
     
     var box = img.getBounds();

@@ -18,6 +18,8 @@
 <script src="/static/js/crezy.js"></script>
 
 <script>
-Crezy.loadPresentation({{ pres.id }});
+    Crezy.loadPresentation({{ pres.id }}, function() {
+        Crezy.init();
+    });
 </script>
 {% endblock %}

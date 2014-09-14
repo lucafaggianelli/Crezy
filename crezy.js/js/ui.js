@@ -21,6 +21,7 @@ Crezy.Ui = function() {
     this.stageBkg = new createjs.Stage(this.background);
 
     createjs.Ticker.addEventListener("tick", this.stage);
+    createjs.Ticker.addEventListener("tick", this.stageBkg);
     createjs.Ticker.setFPS(50);
     
     // Zoom and pan

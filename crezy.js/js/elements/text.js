@@ -8,8 +8,8 @@ Crezy.Text = function(args) {
 goog.inherits(Crezy.Text, Crezy.Element);
 
 Crezy.Text.prototype.edit = function() {
-    this.ui = $('<input type="text" class="element edit" data-type="text" value="'+this.content+'"/>');
-    return this.ui;
+    this.editor = $('<input type="text" class="text-editor" data-type="text" value="'+this.content+'"/>');
+    return this.editor;
 };
 
 Crezy.Text.prototype.draw = function() {
@@ -27,6 +27,9 @@ Crezy.Text.prototype.draw = function() {
     this.ui.x = this.x;
     this.ui.y = this.y;
 
+    this.ui.shadow = new createjs.Shadow('#000000',1,1,3);
+
+    goog.base(this,'draw',null);
     return this.ui;
 };
 

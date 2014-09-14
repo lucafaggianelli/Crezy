@@ -16,10 +16,12 @@ Crezy.Editor.Canvas = function() {
     this.border = new createjs.Shape();
     this.selectBox.addChild(this.border);
     Crezy.ui.stage.addChild(this.selectBox);
+    console.log('canvas constr')
 }
 
 Crezy.Editor.Canvas.prototype.draw = function() {
     Crezy.ui.stage.on('click', this.selectElement, this);
+    Crezy.ui.stage.on('dblclick', this.editElement, this);
     
     // Drag an element
     Crezy.ui.stage.on('pressmove', function(evt) {
@@ -64,6 +66,10 @@ Crezy.Editor.Canvas.prototype.moveElementEnd = function(evt, data) {
     elem.y = evt.target.y;
 }
 
+Crezy.Editor.Canvas.prototype.editElement = function(evt, data) {
+    var editor = Crezy.presentation.elements[evt.target.name].edit();
+    editor.appendTo($('body'));
+}
 Crezy.Editor.Canvas.prototype.selectElement = function(evt, data) {
     var elem = evt.target;
     var box = elem.getBounds();

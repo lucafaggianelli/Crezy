@@ -14,7 +14,8 @@ Crezy.Image.prototype.draw = function() {
     var box = this.ui.getBounds();
     this.ui.regX = box.width / 2;
     this.ui.regY = box.height / 2;
-    this.ui.scaleX = this.ui.scaleY = this.scale;
+    this.ui.scaleX = (this.w / box.width) * this.scale;
+    this.ui.scaleY = (this.h / box.height) * this.scale;
     this.ui.x = this.x;
     this.ui.y = this.y;
 
